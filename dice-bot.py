@@ -60,11 +60,9 @@ def execute_roll(roll):
 	return message
 
 def notify_user(bot, update, result, extra_msg=''):
-	text = 'Yo fam rolled {0}. {1}'.format(result, extra_msg)
+	user = update.message.from_user.name
+	text = '{0} rolled {1}. {2}'.format(user, result, extra_msg)
 	bot.send_message(chat_id=update.message.chat_id, text=text)
-
-def start(bot, update):
-	bot.send_message(chat_id=update.message.chat_id, text="I'm a bot, please talk to me!")
 
 def error(bot, update, error):
 	logger.warn('Update "{0}" caused error "{1}"'.format(update, error))
