@@ -10,14 +10,14 @@ import random
 logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s', level=logging.INFO)
 logger = logging.getLogger(__name__)
 
-ROLE_NUM_DICE = 0
-ROLE_DICE_SIZE = 1
-ROLE_MESSAGE = 2
+ROLL_NUM_DICE = 0
+ROLL_DICE_SIZE = 1
+ROLL_MESSAGE = 2
 
 def roll(bot, update):
 	roll = parse_roll(update.message.text)
 	result = execute_roll(roll)
-	notify_user(bot, update, result, roll[ROLE_MESSAGE])
+	notify_user(bot, update, result, roll[ROLL_MESSAGE])
 
 def parse_roll(command):
 	text = command[3:] # trim '/r '
@@ -42,8 +42,8 @@ def index(s, substring):
 		return -1
 
 def execute_roll(roll):
-	num_dice = int(roll[ROLE_NUM_DICE])
-	dice_size = int(roll[ROLE_DICE_SIZE])
+	num_dice = int(roll[ROLL_NUM_DICE])
+	dice_size = int(roll[ROLL_DICE_SIZE])
 
 	logger.info('num dice: {0}, dice_size: {1}'.format(num_dice, dice_size))
 
