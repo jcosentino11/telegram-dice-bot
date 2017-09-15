@@ -10,25 +10,28 @@ import random
 logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s', level=logging.INFO)
 logger = logging.getLogger(__name__)
 
+ROLE_NUM_DICE = 0
+ROLE_DICE_SIZE = 1
+ROLE_MESSAGE = 2
 
 def roll(bot, update):
 	roll = parse_roll(update.message.text)
 	result = execute_roll(roll)
-	notify_user(bot, update, result, roll[2])
+	notify_user(bot, update, result, roll[ROLE_MESSAGE])
 
-def parse_roll(text):
-	roll = text[3:] # trim '/r '
+def parse_roll(command):
+	text = command[3:] # trim '/r '
 
-	d_index = index(roll, 'd')
-	space_index = index(roll, ' ')
+	d_index = index(text, 'd')
+	space_index = index(text, ' ')
 	
 	# TODO better validation
 	if d_index == -1:
 		return None
 
-	num_dice = roll[:d_index]
-	dice_size = roll[d_index + 1: space_index if space_index != -1 else len(roll)]
-	message = "" if space_index == -1 else roll[space_index + 1:]
+	num_dice = text[:d_index]
+	dice_size = text[d_index + 1: space_index if space_index != -1 else len(text)]
+	message = "" if space_index == -1 else text[space_index + 1:]
 
 	return (num_dice, dice_size, message)
 
@@ -39,8 +42,8 @@ def index(s, substring):
 		return -1
 
 def execute_roll(roll):
-	num_dice = int(roll[0])
-	dice_size = int(roll[1])
+	num_dice = int(roll[ROLE_NUM_DICE])
+	dice_size = int(roll[ROLE_DICE_SIZE])
 
 	logger.info('num dice: {0}, dice_size: {1}'.format(num_dice, dice_size))
 
