@@ -17,7 +17,7 @@ def roll(bot, update):
 	notify_user(bot, update, result, roll[2])
 
 def parse_roll(text):
-	roll = text[3:] # trim '/r ''
+	roll = text[3:] # trim '/r '
 
 	d_index = index(roll, 'd')
 	space_index = index(roll, ' ')
@@ -26,7 +26,11 @@ def parse_roll(text):
 	if d_index == -1:
 		return None
 
-	return (roll[:d_index], roll[d_index + 1:], "" if space_index == -1 else roll[space_index + 1])
+	num_dice = roll[:d_index]
+	dice_size = roll[d_index + 1: space_index if space_index != -1 else len(roll)]
+	message = "" if space_index == -1 else roll[space_index + 1:]
+
+	return (num_dice, dice_size, message)
 
 def index(s, substring):
 	try:
@@ -61,7 +65,7 @@ def execute_roll(roll):
 
 def notify_user(bot, update, result, extra_msg=''):
 	user = update.message.from_user.name
-	text = '{0} rolled {1}. {2}'.format(user, result, extra_msg)
+	text = '{0} rolled {1}.  {2}'.format(user, result, extra_msg)
 	bot.send_message(chat_id=update.message.chat_id, text=text)
 
 def error(bot, update, error):
